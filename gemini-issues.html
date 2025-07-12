@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini常见问题及解决方案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36D399',
+                        danger: '#F87272',
+                        warning: '#FBBD23',
+                        info: '#3ABFF8',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .faq-card {
+                @apply bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-lg border-l-4;
+            }
+            .faq-category {
+                @apply text-lg font-bold mb-3 flex items-center;
+            }
+            .faq-item {
+                @apply mb-2 p-3 rounded-lg transition-all duration-300 hover:bg-gray-50;
+            }
+            .error-code {
+                @apply font-mono bg-gray-100 px-2 py-1 rounded text-sm font-semibold inline-block mb-1;
+            }
+            .cause {
+                @apply text-gray-700 mb-1 italic text-sm;
+            }
+            .solution {
+                @apply text-gray-800 ml-3 relative pl-3 text-sm;
+            }
+            .solution::before {
+                content: '→';
+                @apply absolute left-0 text-primary;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-dark min-h-screen">
+    <div class="container mx-auto px-3 py-6 max-w-6xl">
+        <header class="text-center mb-8">
+            <h1 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Gemini常见问题及解决方案</h1>
+            <p class="text-gray-600 max-w-3xl mx-auto text-sm">以下按错误提示分类，清晰呈现 Gemini 使用中各类问题、成因及应对办法</p>
+        </header>
+
+        <main class="space-y-6">
+            <!-- 网络与节点相关 -->
+            <section class="faq-card border-primary">
+                <div class="faq-category text-primary">
+                    <i class="fa fa-wifi mr-2"></i>
+                    <span>一、网络与节点相关</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="faq-item">
+                        <div class="error-code bg-primary/10 text-primary">【internal server error】</div>
+                        <div class="cause">网络环境问题</div>
+                        <div class="solution">更换 VPN 节点，梯子开全局 TUN</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-primary/10 text-primary">【400 / Country, region, or territory not supported】</div>
+                        <div class="cause">梯子所处国家不支持 Google AI Studio</div>
+                        <div class="solution">切换对应节点；若无效，因梯子“太脏”（被识别限制），需换梯子</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-primary/10 text-primary">【bad request】</div>
+                        <div class="cause">网络环境问题</div>
+                        <div class="solution">换节点，梯子开全局 TUN</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-primary/10 text-primary">【User location is not supported for the API use】</div>
+                        <div class="cause">IP 被限制（“被杀” ）</div>
+                        <div class="solution">换 IP 或用 warp</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容与审核相关 -->
+            <section class="faq-card border-warning">
+                <div class="faq-category text-warning">
+                    <i class="fa fa-file-text-o mr-2"></i>
+                    <span>二、内容与审核相关</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="faq-item">
+                        <div class="error-code bg-warning/10 text-warning">【API returned an error Unknown error occurred】</div>
+                        <div class="cause">酒馆响应上限 2min ，非流式 AI 回复超 2min 会断开</div>
+                        <div class="solution">调低字数控制 / 打开流式传输</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-warning/10 text-warning">【API returned an error No candidates returned】</div>
+                        <div class="cause">需换节点 / 改预设头部</div>
+                        <div class="solution">重新 roll</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-warning/10 text-warning">【400 / Got response status 400】</div>
+                        <div class="cause">内容审核设置有无效参数，成因随机未知；若为 openrouter 用 Gemini</div>
+                        <div class="solution">尝试预设中频率惩罚调 0 ，存在惩罚也调 0</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-warning/10 text-warning">【API returned an error Google AI Studio API returned no candidate Prompt was blocked due to : PROHIBITED_CONTENT】</div>
+                        <div class="cause">prompt 含违规内容被拒</div>
+                        <div class="solution">换预设 / 新开对话；仍无效，需联系卡作者排查卡的问题</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 权限与封禁相关 -->
+            <section class="faq-card border-danger">
+                <div class="faq-category text-danger">
+                    <i class="fa fa-lock mr-2"></i>
+                    <span>三、权限与封禁相关</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="faq-item">
+                        <div class="error-code bg-danger/10 text-danger">【403 / Forbidden】</div>
+                        <div class="cause">网络环境或账号 / 项目问题</div>
+                        <div class="solution">检查网络换梯子；排查账号 / 项目是否被封</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-danger/10 text-danger">【403 / CONSUMER_SUSPENDED】</div>
+                        <div class="cause">项目已被封禁</div>
+                        <div class="solution">需处理封禁问题</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-danger/10 text-danger">【No candidates returned: code 500】</div>
+                        <div class="cause">预设破限力度不够</div>
+                        <div class="solution">更换预设</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模型与请求相关 -->
+            <section class="faq-card border-info">
+                <div class="faq-category text-info">
+                    <i class="fa fa-microchip mr-2"></i>
+                    <span>四、模型与请求相关</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【404 not found】</div>
+                        <div class="cause">模型选择错误</div>
+                        <div class="solution">需重新选正确模型</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【429 : main prompt 被标记】</div>
+                        <div class="cause">主提示词被标记</div>
+                        <div class="solution">尝试换预设；或修改 main prompt （换语言、补充新内容等 ）</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【429 : too many request】</div>
+                        <div class="cause">请求过于频繁</div>
+                        <div class="solution">等待一会；也可能是 “main prompt 被标记” 类问题导致，需结合排查</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【429 / Gemini 2.5 Pro Preview doesn’t have a free quota】</div>
+                        <div class="cause">2.5pro 不支持免费使用</div>
+                        <div class="solution">需充钱</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【500 server_error】</div>
+                        <div class="cause">可能上下文过长</div>
+                        <div class="solution">切换至 flash ；若仍报错，可能 Google 服务器抽风，等待一会</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【503 / SERVICE UNAVAILABLE / overload】</div>
+                        <div class="cause">服务器问题（服务不可用 / 过载 ）</div>
+                        <div class="solution">无解，等待；小道消息或因 IP 问题，可辅助排查</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-info/10 text-info">【Streaming request failed with status 504 Gateway Time - out】</div>
+                        <div class="cause">服务器响应超时</div>
+                        <div class="solution">开流式查看；不行则是 Google 节点问题</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 其他特殊问题 -->
+            <section class="faq-card border-secondary">
+                <div class="faq-category text-secondary">
+                    <i class="fa fa-question-circle mr-2"></i>
+                    <span>五、其他特殊问题</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="faq-item">
+                        <div class="error-code bg-secondary/10 text-secondary">【中文回复中出现外语、八国联军】</div>
+                        <div class="cause">Gemini 模型特色</div>
+                        <div class="solution">删除含外语回复，重新生成；出现即 roll ，避免污染上下文</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-secondary/10 text-secondary">【空回复/截断】</div>
+                        <div class="cause">预设破限力度不够</div>
+                        <div class="solution">更换预设</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-secondary/10 text-secondary">【Google AI Studio Candidate text empty】</div>
+                        <div class="cause">输入截断</div>
+                        <div class="solution">在预设打开防输入截断条目 / 换预设</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-secondary/10 text-secondary">【stream processing panic】</div>
+                        <div class="cause">流式处理错误</div>
+                        <div class="solution">关流式，操作：关流式空回复换预设</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="error-code bg-secondary/10 text-secondary">【Unexpected error in chat_completions endpoint: Server disconnected without sending a response】</div>
+                        <div class="cause">回复太慢超酒馆超时判定（一两分钟无回复 ）</div>
+                        <div class="solution">反代开启假流；无起效则打开流式传输</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-gray-100 p-4 rounded-xl">
+                <h3 class="font-bold text-base mb-2">使用提示</h3>
+                <p class="text-gray-700 text-sm">可根据实际遇到的错误提示，对应查找解决，遇复杂情况可结合多个可能成因排查 。</p>
+            </div>
+        </main>
+
+        <footer class="mt-8 text-center text-gray-500 text-xs">
+            <p>© 2025 Gemini 问题解决方案指南</p>
+        </footer>
+    </div>
+
+    <script>
+        // 添加简单的交互效果
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('bg-gray-50');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    
